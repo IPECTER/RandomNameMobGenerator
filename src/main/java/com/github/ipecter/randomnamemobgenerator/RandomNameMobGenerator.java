@@ -13,6 +13,7 @@ public class RandomNameMobGenerator extends JavaPlugin {
     public void onEnable() {
         ConfigManager.getInstance().initConfigFiles();
         setExecutor();
+        Bukkit.getPluginManager().registerEvents(new Listener(), this);
         Bukkit.getLogger().info(RTUPluginLib.getTextManager().formatted(prefix + "&a활성화&f!"));
     }
 

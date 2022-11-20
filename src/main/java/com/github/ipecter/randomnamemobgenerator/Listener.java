@@ -1,5 +1,6 @@
 package com.github.ipecter.randomnamemobgenerator;
 
+import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,7 +9,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 public class Listener implements org.bukkit.event.Listener {
 
     private final ConfigManager config = ConfigManager.getInstance();
-    private final String prefix = IridiumColorAPI.process("<GRADIENT:ffffff>RNMG</GRADIENT:000000> ") + "&7- ";
+    private final String prefix = IridiumColorAPI.process("<GRADIENT:ffffff>RNMG</GRADIENT:2b2b2b> ") + "&7- ";
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {

@@ -1,6 +1,7 @@
 package com.github.ipecter.randomnamemobgenerator;
 
 import com.github.ipecter.rtu.pluginlib.RTUPluginLib;
+import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 public class Command implements CommandExecutor, TabCompleter {
 
     private ConfigManager configManager = ConfigManager.getInstance();
-    private final String prefix = IridiumColorAPI.process("<GRADIENT:ffffff>RNMG</GRADIENT:000000> ") + "&7- ";
+    private final String prefix = IridiumColorAPI.process("<GRADIENT:ffffff>RNMG</GRADIENT:2b2b2b> ") + "&7- ";
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
@@ -79,7 +80,7 @@ public class Command implements CommandExecutor, TabCompleter {
 
         String name = RandomNickNameGenerator.getRandomNickName();
 
-        entity.setCustomName(name);
+        entity.setCustomName(RTUPluginLib.getTextManager().formatted(prefix + "&f" + name));
         entity.setCustomNameVisible(true);
 
         player.sendMessage(RTUPluginLib.getTextManager().formatted(player, prefix + "&a이름: &f" + name + " &a몹 타입: &f" + entityType.name() + "&a을(를) 소환하였습니다"));
