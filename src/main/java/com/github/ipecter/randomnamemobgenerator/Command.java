@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class Command implements CommandExecutor, TabCompleter {
 
     private ConfigManager configManager = ConfigManager.getInstance();
+    private final String prefix = IridiumColorAPI.process("<GRADIENT:ffffff>RNMG</GRADIENT:000000> ") + "&7- ";
 
     @Override
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
@@ -24,28 +25,30 @@ public class Command implements CommandExecutor, TabCompleter {
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
                 if (sender.hasPermission("rnmg.reload")) {
                     configManager.initConfigFiles();
-                    sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, "&a구성 파일을 다시 읽었습니다"));
+                    sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, prefix + "&a구성 파일을 다시 읽었습니다"));
                 } else {
-                    sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, "&c당신은 권한이 없습니다"));
+                    sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, prefix + "&c당신은 권한이 없습니다"));
                 }
                 return true;
             } else if (args[0].equalsIgnoreCase("spawn")) {
                 if (sender.hasPermission("rnmg.reload")) {
                     spawn((Player) sender);
                 } else {
-                    sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, "&c당신은 권한이 없습니다"));
+                    sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, prefix + "&c당신은 권한이 없습니다"));
                 }
+                return true;
             }
         } else if (args.length == 2 && args[1] != null) {
             if (args[0].equalsIgnoreCase("spawn")) {
                 if (sender.hasPermission("rnmg.reload")) {
                     spawn((Player) sender, EntityType.valueOf(args[1].toUpperCase()));
                 } else {
-                    sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, "&c당신은 권한이 없습니다"));
+                    sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, prefix + "&c당신은 권한이 없습니다"));
                 }
+                return true;
             }
         }
-        sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, "&c잘못된 사용법&7, &f/rnmg reload&7/&fspawn 를 사용하세요"));
+        sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, prefix + "&c잘못된 사용법&7, &f/rnmg reload&7/&fspawn 를 사용하세요"));
         return true;
     }
 
@@ -72,14 +75,13 @@ public class Command implements CommandExecutor, TabCompleter {
     }
 
     private void spawn(Player player, EntityType entityType) {
-        Vector vector = player.getLocation().getDirection().clone().multiply(0.3).setY(0.3D);
-        Entity entity = player.getWorld().spawnEntity(player.getLocation().getDirection().add(vector).toLocation(player.getWorld()), entityType);
+        Entity entity = player.getWorld().spawnEntity(player.getLocation(), entityType);
 
         String name = RandomNickNameGenerator.getRandomNickName();
 
         entity.setCustomName(name);
         entity.setCustomNameVisible(true);
 
-        player.sendMessage(RTUPluginLib.getTextManager().formatted(player, "&a이름: &f" + name + " &a몹: &f" + entityType.name() + " &a를 소환하였습니다"));
+        player.sendMessage(RTUPluginLib.getTextManager().formatted(player, prefix + "&a이름: &f" + name + " &a몹 타입: &f" + entityType.name() + "&a을(를) 소환하였습니다"));
     }
 }
