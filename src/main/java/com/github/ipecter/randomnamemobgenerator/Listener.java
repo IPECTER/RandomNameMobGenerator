@@ -2,8 +2,11 @@ package com.github.ipecter.randomnamemobgenerator;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class Listener implements org.bukkit.event.Listener {
@@ -19,6 +22,16 @@ public class Listener implements org.bukkit.event.Listener {
         } else {
             if (player.isOp())
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', prefix + "&fRandom Name Mob Generator (RNMG) &7/ &f개발&7: &6IPECTER 이팩터"));
+        }
+    }
+
+    @EventHandler
+    public void onDead(PlayerDeathEvent e) {
+        Entity entity = e.getEntity().getKiller();
+        if (entity.getCustomName().startsWith(ChatColor.translateAlternateColorCodes('&', prefix))) {
+            if (!entity.isDead()){
+                entity.remove();
+            }
         }
     }
 }
