@@ -39,7 +39,7 @@ public class Command implements CommandExecutor, TabCompleter {
         } else if (args.length == 2 && args[1] != null) {
             if (args[0].equalsIgnoreCase("spawn")) {
                 if (sender.hasPermission("rnmg.reload")) {
-                    spawn((Player) sender, EntityType.valueOf(args[1]));
+                    spawn((Player) sender, EntityType.valueOf(args[1].toUpperCase()));
                 } else {
                     sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, "&c당신은 권한이 없습니다"));
                 }
