@@ -2,6 +2,8 @@ package com.github.ipecter.randomnamemobgenerator;
 
 import com.github.ipecter.rtu.pluginlib.RTUPluginLib;
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
+import org.bukkit.ChatColor;
+import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -33,7 +35,7 @@ public class Command implements CommandExecutor, TabCompleter {
                 return true;
             } else if (args[0].equalsIgnoreCase("spawn")) {
                 if (sender.hasPermission("rnmg.reload")) {
-                    spawn((Player) sender);
+                    spawn(sender);
                 } else {
                     sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, prefix + "&c당신은 권한이 없습니다"));
                 }
@@ -42,7 +44,7 @@ public class Command implements CommandExecutor, TabCompleter {
         } else if (args.length == 2 && args[1] != null) {
             if (args[0].equalsIgnoreCase("spawn")) {
                 if (sender.hasPermission("rnmg.reload")) {
-                    spawn((Player) sender, EntityType.valueOf(args[1].toUpperCase()));
+                    spawn(sender, EntityType.valueOf(args[1].toUpperCase()));
                 } else {
                     sender.sendMessage(RTUPluginLib.getTextManager().formatted(sender instanceof Player ? (Player) sender : null, prefix + "&c당신은 권한이 없습니다"));
                 }
@@ -69,20 +71,35 @@ public class Command implements CommandExecutor, TabCompleter {
         return Arrays.asList();
     }
 
-    private void spawn(Player player) {
+    private void spawn(CommandSender sender) {
         Random random = new Random();
         int randomIndex = random.nextInt(configManager.getMobList().size());
-        spawn(player, configManager.getMobList().get(randomIndex));
+        spawn(sender, configManager.getMobList().get(randomIndex));
     }
 
-    private void spawn(Player player, EntityType entityType) {
-        Entity entity = player.getWorld().spawnEntity(player.getLocation(), entityType);
+    private void spawn(CommandSender sender, EntityType entityType) {
+        if (sender instanceof BlockCommandSender commandSender){
+            Entity entity = commandSender.getBlock().getWorld().spawnEntity(commandSender.getBlock().getLocation(), entityType);
 
-        String name = RandomNickNameGenerator.getRandomNickName();
+            String name = RandomNickNameGenerator.getRandomNickName();
 
-        entity.setCustomName(RTUPluginLib.getTextManager().formatted(prefix + "&f" + name));
-        entity.setCustomNameVisible(true);
+            entity.setCustomName(RTUPluginLib.getTextManager().formatted(prefix + "&f" + name));
+            entity.setCustomNameVisible(true);
 
-        player.sendMessage(RTUPluginLib.getTextManager().formatted(player, prefix + "&a이름: &f" + name + " &a몹 타입: &f" + entityType.name() + "&a을(를) 소환하였습니다"));
+            commandSender.sendMessage(RTUPluginLib.getTextManager().formatted(prefix + "&a이름: &f" + name + " &a몹 타입: &f" + entityType.name() + "&a을(를) 소환하였습니다"));
+            return;
+        }
+        if (sender instanceof Player player) {
+            Entity entity = player.getWorld().spawnEntity(player.getLocation(), entityType);
+
+            String name = RandomNickNameGenerator.getRandomNickName();
+
+            entity.setCustomName(ChatColor.translateAlternateColorCodes('&', "&7RNMG - &f" + name));
+            entity.setCustomNameVisible(true);
+
+            player.sendMessage(RTUPluginLib.getTextManager().formatted(player, prefix + "&a이름: &f" + name + " &a몹 타입: &f" + entityType.name() + "&a을(를) 소환하였습니다"));
+            return;
+        }
+        sender.sendMessage(RTUPluginLib.getTextManager().formatted(prefix + "&c오직 플레이어 또는 커맨드 블럭에서만 실행할 수 있습니다"));
     }
 }
