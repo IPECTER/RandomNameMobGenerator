@@ -1,0 +1,35 @@
+#랜덤으로 스폰할 몹 목록 (기본값은 보스를 제외한 모든 적대적인 몹입니다)
+list:
+  - BLAZE
+  - CAVE_SPIDER
+  - CREEPER
+  - DROWNED
+  - ELDER_GUARDIAN
+  - ENDERMAN
+  - ENDERMITE
+  - EVOKER
+  - GHAST
+  - GUARDIAN
+  - HOGLIN
+  - HUSK
+  - ILLUSIONER
+  - MAGMA_CUBE
+  - PHANTOM
+  - PIGLIN
+  - PIGLIN_BRUTE
+  - PILLAGER
+  - SHULKER
+  - SILVERFISH
+  - SKELETON
+  - SLIME
+  - SPIDER
+  - STRAY
+  - VEX
+  - VINDICATOR
+  - WITCH
+  - WITHER_SKELETON
+  - ZOGLIN
+  - ZOMBIE
+  - ZOMBIE_VILLAGER
+  - ZOMBIFIED_PIGLIN
+  - WARDEN

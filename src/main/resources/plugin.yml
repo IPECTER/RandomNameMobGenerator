@@ -1,0 +1,13 @@
+name: RandomNameMobGenerator
+version: '${version}'
+main: com.github.ipecter.randomnamemobgenerator.RandomNameMobGenerator
+api-version: 1.13
+authors: [ IPECTER ]
+description: RandomNameMobGenerator Plugin
+permissions:
+  rnmg.reload:
+    default: op
+  rnmg.spawn:
+    default: op
+commands:
+  rnmg:
